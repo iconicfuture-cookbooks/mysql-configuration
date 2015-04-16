@@ -15,14 +15,6 @@
 # limitations under the License.
 #
 
-#
-# Create instance
-#
-mysql_service 'default' do
-  port '3306'
-  version '5.6'
-  initial_root_password "#{node['mysql']['server_root_password']}"
-  action [:create, :start]
-end
+include_recipe 'mysql::client'
 
 include_recipe "mysql-configuration::deploy"
