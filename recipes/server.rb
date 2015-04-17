@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: mysql-configuration
-# Recipe:: deploy
+# Recipe:: server
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,4 +15,10 @@
 # limitations under the License.
 #
 
-include_recipe 'mysql-configuration::server'
+mysql_service 'default' do
+    version "#{node['mysql']['version']}"
+    initial_root_password "#{node['mysql']['server_root_password']}"
+    action [:create, :start]
+end
+
+include_recipe 'mysql-configuration::client'
