@@ -66,7 +66,7 @@ unless node['mysql'].nil?
       execute "#{name}-import-db-struct" do
         command "\"#{node['mysql']['mysql_bin']}\" -h #{node['mysql']['host']} -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/tmp/bootstrap.#{name}.sql\""
         only_if do
-          File.exists?("/tmp/bootstrap.#{config['name']}.sql")
+          File.exists?("/tmp/bootstrap.#{name}.sql")
         end
       end
     end
