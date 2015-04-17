@@ -20,14 +20,14 @@ unless node['mysql'].nil?
   unless node['sites'].nil?
     node['sites'].each do |name, config|
       execute "#{name}-import-db-struct" do
-        command "\"#{node['mysql']['mysql_bin']}\" -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/var/www/#{config['fqdn']}/sql/prod.struct.sql\""
+        command "\"#{node['mysql']['mysql_bin']}\" -h #{node['mysql']['host']} -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/var/www/#{config['fqdn']}/sql/prod.struct.sql\""
         only_if do
           File.exists?("/var/www/#{config['fqdn']}/sql/prod.struct.sql")
         end
       end
 
       execute "#{name}-import-db-data" do
-        command "\"#{node['mysql']['mysql_bin']}\" -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/var/www/#{config['fqdn']}/sql/prod.data.sql\""
+        command "\"#{node['mysql']['mysql_bin']}\" -h #{node['mysql']['host']} -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/var/www/#{config['fqdn']}/sql/prod.data.sql\""
         only_if do
           File.exists?("/var/www/#{config['fqdn']}/sql/prod.data.sql")
         end
@@ -43,7 +43,7 @@ unless node['mysql'].nil?
       end
 
       execute "#{name}-apply-development" do
-        command "\"#{node['mysql']['mysql_bin']}\" -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/var/www/#{config['fqdn']}/sql/development.sql\""
+        command "\"#{node['mysql']['mysql_bin']}\" -h #{node['mysql']['host']} -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/var/www/#{config['fqdn']}/sql/development.sql\""
         only_if do
           File.exists?("/var/www/#{config['fqdn']}/sql/development.sql")
         end
@@ -64,9 +64,9 @@ unless node['mysql'].nil?
         end
       end
       execute "#{name}-import-db-struct" do
-        command "\"#{node['mysql']['mysql_bin']}\" -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/tmp/bootstrap.#{config['name']}.sql\""
+        command "\"#{node['mysql']['mysql_bin']}\" -h #{node['mysql']['host']} -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"/tmp/bootstrap.#{name}.sql\""
         only_if do
-          File.exists?(/tmp/bootstrap.#{config['name']}.sql)
+          File.exists?("/tmp/bootstrap.#{config['name']}.sql")
         end
       end
     end

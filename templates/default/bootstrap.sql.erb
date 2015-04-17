@@ -6,13 +6,14 @@ SET time_zone = "+00:00";
 --
 -- Create database
 --
+DROP DATABASE IF EXISTS <%= @config['name'] %>;
 CREATE DATABASE <%= @config['name'] %> DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE <%= ['name'] %>;
+USE <%= @config['name'] %>;
 
 
 --
 -- Create user
 --
-GRANT SELECT, INSERT, UPDATE, DELETE ON <%= @config['name'] %> TO <%= @config['user'] %>@<%= @config['host'] %> IDENTIFIED BY '<%= @config['password'] %>';
+GRANT SELECT, INSERT, UPDATE, DELETE ON <%= @config['name'] %>.* TO <%= @config['user'] %>@<%= @config['host'] %> IDENTIFIED BY '<%= @config['password'] %>';
 
 SET FOREIGN_KEY_CHECKS=1;
