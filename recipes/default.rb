@@ -15,6 +15,6 @@
 # limitations under the License.
 #
 
-include_recipe 'mysql::client'
+include_recipe 'mysql-configuration::deploy'
 
-include_recipe "mysql-configuration::deploy"
+include_recipe "mysql-configuration::configure"
